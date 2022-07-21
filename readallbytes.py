@@ -21,7 +21,8 @@ def formatter(bin, format):
     binary_code = ''
     for byte in data:
         binary_code += "\\x" + hex(byte)[2:].zfill(2)
-    cs_shellcode = "0" + ",0".join(binary_code.split("\\")[1:])
+    cs = "0" + ",0".join(binary_code.split("\\")[1:])
+    cs_shellcode = f"static byte[] buf = new byte[{cs.count('x')}] {{ {cs} }};"
     encoded_cs = base64.b64encode(cs_shellcode.encode())
     
     if format == "blob_b64":
