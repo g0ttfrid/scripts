@@ -3,14 +3,13 @@ import base64
 from argparse import ArgumentParser
 from argparse import RawTextHelpFormatter
 
-
 # https://github.com/FortyNorthSecurity/RandomScripts/blob/main/Cobalt%20Scripts/shellcode_formatter.py
 
 def parse_args():
-    parser = ArgumentParser(usage='python3 readallbytes.py  -f shellcode.bin', formatter_class=RawTextHelpFormatter)
+    parser = ArgumentParser(usage='python3 readallbytes.py -b shellcode.bin -f csharp', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-b', '--bin', required=True, help="Binary file")
-    parser.add_argument('-f', '--format', type=str, required=True, help="blob_b64 = Binary blob base64 encoded\n"
-    "shellcode = Standard shellcode format\n"
+    parser.add_argument('-f', '--format', type=str, required=True, help="shellcode = Standard shellcode format\n"
+    "blob_b64 = Binary blob base64 encoded\n"
     "csharp = C# formatted shellcode\n"
     "csharp_b64 = Base64 encoded C# shellcode")
     return parser.parse_args()
@@ -33,12 +32,12 @@ def formatter(bin, format):
     except:
         print('[!] Error formatting the file!')
     
-    if format == "blob_b64":
-        print("[+] Binary blob base64 encoded:\n")
-        print(encoded_raw.decode('ascii'))
-    elif format == "shellcode":
+    if format == "shellcode":
         print("[+] Standard shellcode format:\n")
         print(binary_code)
+    elif format == "blob_b64":
+        print("[+] Binary blob base64 encoded:\n")
+        print(encoded_raw.decode('ascii'))
     elif format == "csharp":
         print("[+] C# formatted shellcode:\n")
         print(csharp)
@@ -46,7 +45,7 @@ def formatter(bin, format):
         print("[+] Base64 encoded C# shellcode:\n")
         print(encoded_cs.decode('ascii'))
     else:
-        print("[!] output format not found!")
+        print("[!] Output format not found!")
 
 if __name__ == '__main__':
     args = parse_args()
