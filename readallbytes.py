@@ -9,7 +9,7 @@ from argparse import RawTextHelpFormatter
 def parse_args():
     parser = ArgumentParser(usage='python3 readallbytes.py  -f shellcode.bin', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-b', '--bin', required=True, help="Binary file")
-    parser.add_argument('-f', '--format', type=str, required=True, help="blob_b64 = Binary Blob base64 encoded\n"
+    parser.add_argument('-f', '--format', type=str, required=True, help="blob_b64 = Binary blob base64 encoded\n"
     "shellcode = Standard shellcode format\n"
     "csharp = C# formatted shellcode\n"
     "csharp_b64 = Base64 encoded C# shellcode")
@@ -34,7 +34,7 @@ def formatter(bin, format):
         print('[!] Error formatting the file!')
     
     if format == "blob_b64":
-        print("[+] Binary Blob base64 encoded:\n")
+        print("[+] Binary blob base64 encoded:\n")
         print(encoded_raw.decode('ascii'))
     elif format == "shellcode":
         print("[+] Standard shellcode format:\n")
