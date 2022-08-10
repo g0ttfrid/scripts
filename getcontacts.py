@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from argparse import ArgumentParser
 from argparse import RawTextHelpFormatter
+from unidecode import unidecode
 
 urllib3.disable_warnings()
 
@@ -74,9 +75,9 @@ if __name__ == '__main__':
             fullname = (line.split('-')[0]).lower()
             listname = fullname.split(' ')
             if len(listname[1]) < 3 and listname[2] :
-                print(f"{listname[0]}.{listname[2]}")
+                print(unidecode(f"{listname[0]}.{listname[2]}"))
             else:
-                print(f"{listname[0]}.{listname[1]}")
+                print(unidecode(f"{listname[0]}.{listname[1]}"))
 
     elif args.format == "firstletterlastname":
         print("\n[+] FirstletterLastname (e.g. jdoe):")
@@ -85,9 +86,9 @@ if __name__ == '__main__':
             fullname = (line.split('-')[0]).lower()
             listname = fullname.split(' ')
             if len(listname[1]) < 3 and listname[2] :
-                print(f"{listname[0][0]}{listname[2]}")
+                print(unidecode(f"{listname[0][0]}{listname[2]}"))
             else:
-                print(f"{listname[0][0]}{listname[1]}")
+                print(unidecode(f"{listname[0][0]}{listname[1]}"))
 
     else:
         print("[!] Output format not found!")
