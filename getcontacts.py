@@ -11,7 +11,7 @@ def parse_args():
     parser = ArgumentParser(usage='python3 getcontacts.py -t umbrella.corp -f', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-t', '--target', type=str, required=True, help='insert company')
     parser.add_argument('-f', '--format', type=str, help="\n"
-    "linkedin (e.g. John Doe - Killer - Se7en)\n"
+    "linkedin (e.g. John Doe - Serial Killer - Se7en)\n"
     "firstname.lastname (e.g. john.doe)\n"
     "firstletterlastname (e.g. jdoe)")
     return parser.parse_args()
