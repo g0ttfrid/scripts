@@ -8,7 +8,8 @@ from argparse import RawTextHelpFormatter
 def parse_args():
     parser = ArgumentParser(usage='python3 readallbytes.py -b shellcode.bin -f csharp', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-b', '--bin', required=True, help="Binary file")
-    parser.add_argument('-f', '--format', type=str, required=True, help="shellcode = Standard shellcode format\n"
+    parser.add_argument('-f', '--format', type=str, required=True, help="\n"
+    "shellcode = Standard shellcode format\n"
     "blob_b64 = Binary blob base64 encoded\n"
     "csharp = C# formatted shellcode\n"
     "csharp_b64 = Base64 encoded C# shellcode")
@@ -22,12 +23,12 @@ def formatter(bin, format):
         print('[!] Error while opening the file!')  
 
     try:
-        encoded_raw = base64.b64encode(data)
         binary_code = ''
         for byte in data:
             binary_code += "\\x" + hex(byte)[2:].zfill(2)
+        encoded_raw = base64.b64encode(data)
         cs = "0" + ",0".join(binary_code.split("\\")[1:])
-        csharp = f"static byte[] buf = new byte[{cs.count('x')}] {{ {cs} }};"
+        csharp = f"byte[] buf = new byte[{cs.count('x')}] {{ {cs} }};"
         encoded_cs = base64.b64encode(csharp.encode())
     except:
         print('[!] Error formatting the file!')
