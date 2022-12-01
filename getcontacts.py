@@ -74,7 +74,7 @@ if __name__ == '__main__':
             line = i.strip()
             fullname = (line.split('-')[0]).lower()
             listname = fullname.split(' ')
-            if len(listname[1]) < 3 and listname[2] :
+            if len(listname[1]) < 4 and listname[2] :
                 print(unidecode(f"{listname[0]}.{listname[2]}"))
             else:
                 print(unidecode(f"{listname[0]}.{listname[1]}"))
@@ -85,7 +85,7 @@ if __name__ == '__main__':
             line = i.strip()
             fullname = (line.split('-')[0]).lower()
             listname = fullname.split(' ')
-            if len(listname[1]) < 3 and listname[2] :
+            if len(listname[1]) < 4 and listname[2] :
                 print(unidecode(f"{listname[0][0]}{listname[2]}"))
             else:
                 print(unidecode(f"{listname[0][0]}{listname[1]}"))
