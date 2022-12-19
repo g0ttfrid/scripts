@@ -14,6 +14,7 @@ def parse_args():
     parser.add_argument('-f', '--format', type=str, help="\n"
     "linkedin (e.g. John Doe - Serial Killer - Se7en)\n"
     "firstname.lastname (e.g. john.doe)\n"
+    "firstnamelastname (e.g. johndoe)\n"
     "firstletterlastname (e.g. jdoe)")
     return parser.parse_args()
 
@@ -78,6 +79,17 @@ if __name__ == '__main__':
                 print(unidecode(f"{listname[0]}.{listname[2]}"))
             else:
                 print(unidecode(f"{listname[0]}.{listname[1]}"))
+
+    elif args.format == "firstnamelastname":
+        print("\n[+] FirstnameLastname (e.g. johndoe):")
+        for i in data:
+            line = i.strip()
+            fullname = (line.split('-')[0]).lower()
+            listname = fullname.split(' ')
+            if len(listname[1]) < 4 and listname[2] :
+                print(unidecode(f"{listname[0]}{listname[2]}"))
+            else:
+                print(unidecode(f"{listname[0]}{listname[1]}"))
 
     elif args.format == "firstletterlastname":
         print("\n[+] FirstletterLastname (e.g. jdoe):")
