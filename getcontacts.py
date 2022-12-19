@@ -9,7 +9,7 @@ from unidecode import unidecode
 urllib3.disable_warnings()
 
 def parse_args():
-    parser = ArgumentParser(usage='python3 getcontacts.py -t "Se7en" -f', formatter_class=RawTextHelpFormatter)
+    parser = ArgumentParser(usage='python3 getcontacts.py -t "Se7en Corp"', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-t', '--target', type=str, required=True, help='insert company')
     parser.add_argument('-f', '--format', type=str, help="\n"
     "linkedin (e.g. John Doe - Serial Killer - Se7en)\n"
