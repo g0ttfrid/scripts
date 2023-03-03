@@ -74,53 +74,53 @@ if __name__ == '__main__':
         print("\n[+] Firstname.Lastname (e.g. john.doe):")
         for i in data:
             line = i.replace(",", "").replace(".", "")
-            fullname = (line.split('-')[0]).lower()
+            fullname = unidecode((line.split('-')[0]).lower())
             names = list(filter(lambda word: len(word)>3,fullname.split(' ')))
             
             if len(names) > 2:
-                print(unidecode(f"{names[0]}.{names[1]}"))
-                print(unidecode(f"{names[0]}.{names[2]}"))
+                print(f"{names[0]}.{names[1]}")
+                print(f"{names[0]}.{names[2]}")
             elif len(names) == 2:
-                print(unidecode(f"{names[0]}.{names[1]}"))
+                print(f"{names[0]}.{names[1]}")
 
     elif args.format == "firstname_lastname":
         print("\n[+] Firstname_Lastname (e.g. john_doe):")
         for i in data:
             line = i.replace(",", "").replace(".", "")
-            fullname = (line.split('-')[0]).lower()
+            fullname = unidecode((line.split('-')[0]).lower())
             names = list(filter(lambda word: len(word)>3,fullname.split(' ')))
             
             if len(names) > 2:
-                print(unidecode(f"{names[0]}_{names[1]}"))
-                print(unidecode(f"{names[0]}_{names[2]}"))
+                print(f"{names[0]}_{names[1]}")
+                print(f"{names[0]}_{names[2]}")
             elif len(names) == 2:
-                print(unidecode(f"{names[0]}_{names[1]}"))
+                print(f"{names[0]}_{names[1]}")
 
     elif args.format == "firstnamelastname":
         print("\n[+] FirstnameLastname (e.g. johndoe):")
         for i in data:
             line = i.replace(",", "").replace(".", "")
-            fullname = (line.split('-')[0]).lower()
+            fullname = unidecode((line.split('-')[0]).lower())
             names = list(filter(lambda word: len(word)>3,fullname.split(' ')))
             
             if len(names) > 2:
-                print(unidecode(f"{names[0]}{names[1]}"))
-                print(unidecode(f"{names[0]}{names[2]}"))
+                print(f"{names[0]}{names[1]}")
+                print(f"{names[0]}{names[2]}")
             elif len(names) == 2:
-                print(unidecode(f"{names[0]}{names[1]}"))
+                print(f"{names[0]}{names[1]}")
 
     elif args.format == "firstletterlastname":
         print("\n[+] FirstletterLastname (e.g. jdoe):")
         for i in data:
             line = i.replace(",", "").replace(".", "")
-            fullname = (line.split('-')[0]).lower()
+            fullname = unidecode((line.split('-')[0]).lower())
             names = list(filter(lambda word: len(word)>3,fullname.split(' ')))
             
             if len(names) > 2:
-                print(unidecode(f"{names[0][0]}.{names[1]}"))
-                print(unidecode(f"{names[0][0]}.{names[2]}"))
+                print(f"{names[0][0]}.{names[1]}")
+                print(f"{names[0][0]}.{names[2]}")
             elif len(names) == 2:
-                print(unidecode(f"{names[0][0]}.{names[1]}"))
+                print(f"{names[0][0]}.{names[1]}")
 
     else:
         print("[!] Output format not found!")
