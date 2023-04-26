@@ -10,9 +10,10 @@ def parse_args():
     parser.add_argument('-b', '--bin', required=True, help="Binary file")
     parser.add_argument('-f', '--format', type=str, required=True, help="\n"
     "shellcode = Standard shellcode format\n"
-    "blob_b64 = Binary blob base64 encoded\n"
+    "base64 = Binary blob base64 encoded\n"
     "csharp = C# formatted shellcode\n"
-    "csharp_b64 = Base64 encoded C# shellcode")
+    "csharp_b64 = Base64 encoded C# shellcode\n"
+    "nim = Nim formatted shellcode")
     return parser.parse_args()
 
 def formatter(bin, format):
@@ -29,14 +30,15 @@ def formatter(bin, format):
         encoded_raw = base64.b64encode(data)
         cs = "0" + ",0".join(binary_code.split("\\")[1:])
         csharp = f"byte[] buf = new byte[{cs.count('x')}] {{ {cs} }};"
-        encoded_cs = base64.b64encode(csharp.encode())
+        nim = f"var buf: array[{cs.count('x')}, byte] = [byte {cs}]"
+        encoded_cs = base64.b64encode(cs.encode())
     except:
         print('[!] Error formatting the file!')
     
     if format == "shellcode":
         print("[+] Standard shellcode format:\n")
         print(binary_code)
-    elif format == "blob_b64":
+    elif format == "base64":
         print("[+] Binary blob base64 encoded:\n")
         print(encoded_raw.decode('ascii'))
     elif format == "csharp":
@@ -45,6 +47,9 @@ def formatter(bin, format):
     elif format == "csharp_b64":
         print("[+] Base64 encoded C# shellcode:\n")
         print(encoded_cs.decode('ascii'))
+    elif format == "nim":
+        print("[+] Nim formatted shellcode:\n")
+        print(nim)
     else:
         print("[!] Output format not found!")
 
