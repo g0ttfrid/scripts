@@ -36,7 +36,7 @@ function Invoke-EnumDrive
 
     if ($method -eq "recon")
     {
-        $taskResult = [EnumDrive.Program]::Main(@($method, $domain)) | Out-Null
+        [EnumDrive.Program]::Main(@($method, $domain)) | Out-Null
     }
     elseif ($method -eq "enum")
     {
