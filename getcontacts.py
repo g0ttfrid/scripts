@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from argparse import ArgumentParser
 from argparse import RawTextHelpFormatter
 from unidecode import unidecode
+from fake_useragent import UserAgent
 
 urllib3.disable_warnings()
 
@@ -12,7 +13,7 @@ def parse_args():
     parser = ArgumentParser(usage='python3 getcontacts.py -t "Se7en Corp"', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-t', '--target', type=str, required=True, help='insert company')
     parser.add_argument('-f', '--format', type=str, help="\n"
-    "linkedin (e.g. John Doe - Serial Killer - Se7en)\n"
+    "linkedin (e.g. John Doe - Serial Killer - Se7en Corp)\n"
     "firstname.lastname (e.g. john.doe)\n"
     "firstname_lastname (e.g. john_doe)\n"
     "firstnamelastname (e.g. johndoe)\n"
@@ -21,9 +22,7 @@ def parse_args():
 
 def linked(target, proxy=None):
     print(f'\n[+] Target: {target}')
-
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'}
-    
+        
     if proxy:
         proxies = {'http': f'http://{proxy}', 'https': f'http://{proxy}'}
     else:
@@ -34,6 +33,9 @@ def linked(target, proxy=None):
 
     while True:
         time.sleep(3.0)
+
+        ua = UserAgent()
+        headers = {'User-Agent': f'{ua.random}', 'Referer': 'https://www.google.com.br'}
 
         try:
             r = requests.get(f'https://www.google.com/search?q=site:linkedin.com/in+"{target}"&num=50&start={cont}', headers=headers, proxies=proxies, timeout=(5), verify=False)
