@@ -1,5 +1,6 @@
 import urllib3
 import time
+import sys
 import requests
 from bs4 import BeautifulSoup
 from argparse import ArgumentParser
@@ -36,13 +37,9 @@ def linked(target, proxy=None):
     while True:
         ua = UserAgent()
         headers = {"Sec-Ch-Ua": "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\"", "Sec-Ch-Ua-Mobile": "?0", "Sec-Ch-Ua-Platform": "\"Windows\"", "Upgrade-Insecure-Requests": "1", "User-Agent": f"{ua.random}", "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7", "X-Client-Data": "CNzeygE=", "Sec-Fetch-Site": "none", "Sec-Fetch-Mode": "navigate", "Sec-Fetch-User": "?1", "Sec-Fetch-Dest": "document", "Accept-Encoding": "gzip, deflate, br", "Accept-Language": "en-US,en;q=0.9", "Priority": "u=0, i", "Referer": "https://www.google.com.br"}
-
-        try:
-            r = requests.get(f'https://www.google.com.br/search?q=site:linkedin.com/in+"{target}"&num=50&start={cont}&cr=countryBR&tbs=ctr:countryBR,lr:lang_1pt&source=lnt&lr=lang_pt', headers=headers, proxies=proxies, timeout=(5), verify=False)
-            r.raise_for_status()
-        except requests.exceptions.RequestException as err:
-            print(f'[!] Error connection:\n{err}')
-            break
+        req = f'https://www.google.com.br/search?q=site:linkedin.com/in+"{target}"&num=50&start={cont}&cr=countryBR&tbs=ctr:countryBR,lr:lang_1pt&source=lnt&lr=lang_pt'
+        
+        r = retry_request(req, headers, proxies)
         
         if 'o encontrou nenhum document' in r.text:
             break
@@ -59,8 +56,30 @@ def linked(target, proxy=None):
     
     return data
 
+def make_request(req, headers, proxies):
+    try:
+        r = requests.get(req, headers=headers, proxies=proxies, timeout=15, verify=False, allow_redirects=False)
+        r.raise_for_status()
+        return r
+    except requests.exceptions.RequestException as err:
+        print(f'[!] Error connection:\n{err}')
+        return None
+
+def retry_request(req, headers, proxies, max_retries=3, retry_wait=10):
+    for attempt in range(1, max_retries + 1):
+        response = make_request(req, headers, proxies)
+        
+        if response and response.status_code == 200:
+            return response
+        else:
+            print(f"[-] Google detect, trying slower... (Tentativa {attempt}/{max_retries})")
+            time.sleep(retry_wait)
+
+    print("[!] Again google detect, try again later")
+    sys.exit()
+
 def generate_formats(data, format_type):
-    print(f"[+] {format_type}:")
+    print(f"[+] Format: {format_type}:")
 
     for i in data:
         full = unidecode((i.split(' - ')[0]).lower())
@@ -98,21 +117,22 @@ if __name__ == '__main__':
             if args.format in ["firstname.lastname", "firstname_lastname", "firstnamelastname", "firstletterlastname"]:
                 output = generate_formats(data, args.format)
             elif args.format == "linkedin" or args.format == None:
-                print("[+] LinkedIn:")
+                print("[+] Format: LinkedIn")
                 for i in data:
                     line = i.strip()
                     output.add(line)
             else:
-                print("[!] Output format not found. \n[+] LinkedIn:")
+                print("[!] Unidentified input format \n[+] Format: LinkedIn")
                 for i in data:
                     line = i.strip()
                     output.add(line)
                 
             logger(args.target, output)
-            print(*output, sep="\n")
+            #print(*output, sep="\n")
+            print(f"[+] Saved file '{args.target}.txt'")
 
         else:
-            print(f'[!] Users not found\n')
+            print("[!] Error connection | Users not found")
     
     except KeyboardInterrupt:
         print('\n[!] Stopping')
