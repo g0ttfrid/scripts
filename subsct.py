@@ -39,7 +39,7 @@ def subdomains(target):
                 for name in value['name_value'].split(sep='\n'):
                     if '*' not in name and target in name: data.add(name)
             else:
-                data.add(value['name_value'])
+                if '*' not in value['name_value']: data.add(value['name_value'])
     except Exception as err:
         print(f'[!] {err}')
 
