@@ -48,6 +48,7 @@ def linked(target, proxy=None):
         for link in bs.find_all('a'):
             if 'linkedin.com' in link.text: 
                 link_href = link.get('href')
+                #h3_text = link.find('h3').text if link.find('h3') else "Not found"
                 h3_text = link.find('h3').text
                 data.add(unquote(f"{h3_text} ({link_href})"))
 
@@ -58,7 +59,7 @@ def linked(target, proxy=None):
 
 def make_request(req, headers, proxies):
     try:
-        r = requests.get(req, headers=headers, proxies=proxies, timeout=15, verify=False, allow_redirects=False)
+        r = requests.get(req, headers=headers, proxies=proxies, timeout=8, verify=False, allow_redirects=False)
         r.raise_for_status()
         return r
     except requests.exceptions.RequestException as err:
@@ -72,10 +73,10 @@ def retry_request(req, headers, proxies, max_retries=3, retry_wait=10):
         if response and response.status_code == 200:
             return response
         else:
-            print(f"[-] Google detect, trying slower... (Tentativa {attempt}/{max_retries})")
+            print(f"[-] Attempt {attempt}/{max_retries}")
             time.sleep(retry_wait)
 
-    print("[!] Again google detect, try again later")
+    print("[!] Try again later")
     sys.exit()
 
 def generate_formats(data, format_type):
@@ -128,8 +129,8 @@ if __name__ == '__main__':
                     output.add(line)
                 
             logger(args.target, output)
-            #print(*output, sep="\n")
-            print(f"[+] Saved file '{args.target}.txt'")
+            print(*output, sep="\n")
+            #print(f"[+] Saved file '{args.target}.txt'")
 
         else:
             print("[!] Error connection | Users not found")
