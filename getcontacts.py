@@ -48,8 +48,9 @@ def linked(target, proxy=None):
         for link in bs.find_all('a'):
             if 'linkedin.com' in link.text: 
                 link_href = link.get('href')
-                #h3_text = link.find('h3').text if link.find('h3') else "Not found"
-                h3_text = link.find('h3').text
+                # temp
+                h3_text = link.find('h3').text if link.find('h3') else "Name error"
+                #h3_text = link.find('h3').text
                 data.add(unquote(f"{h3_text} ({link_href})"))
 
         time.sleep(5.0)
